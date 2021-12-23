@@ -38,7 +38,7 @@ def runTCTrend(config):
   upper = std_diff[1]
 
   def func_tcb(image):
-      return utils_LS.update_mask_by_std(image, lower, upper, configs.select_bands_visible)
+      return utils_LS.update_mask_by_std(image, lower, upper, config.select_bands_visible)
   collection = collection.map(func_tcb)
 
   # 3. Calculate image pixel count
@@ -47,20 +47,20 @@ def runTCTrend(config):
 
   # 4. Calculate trend
   trend_image = ee.Image()
-  for index in configs.select_indices:
+  for index in config.select_indices:
     trend = ee.ImageCollection(collection.select(['Date', index])) \
       .reduce(ee.Reducer.linearFit().unweighted()) \
       .select(['scale'], [index + '_slope'])
     trend_image = trend_image.addBands(trend)
 
-  trend_image = trend_image.multiply(ee.Image.constant(3650))
+  trend_image = trend_image.multiply(ee.Image.constant(3650)).select(config.select_TCtrend_bands)
 
   # 5. Calculate basic collection statistics
   #
   
   # 6. Create visual output
   #trend_image = trend_image
-  trend_image_visual = trend_image.select(configs.select_TCtrend_bands) \
+  trend_image_visual = trend_image.select(config.select_TCtrend_bands) \
                                   .unitScale(-1200, 1200)\
                                   .multiply(ee.Image.constant(255)).uint8() # Scale to values from -0.12 to 0.12 \
      
