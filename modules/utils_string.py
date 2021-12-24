@@ -35,5 +35,6 @@ def make_TCTrendAssetNameSR(leftLon, lowLat, startyear, endyear):
   else:
       lon = lon
 
-  assetname = 'TCTrend_SR_'+ denom_lon + str(lon) + denom_lat + str(lat) +'_'+str(startyear)+'-'+str(endyear)+'_TCVIS'
+  #assetname = 'TCTrend_SR_'+ denom_lon + str(lon) + denom_lat + str(lat) +'_'+str(startyear)+'-'+str(endyear)+'_TCVIS'
+  assetname = denom_lon + str(lon) + denom_lat + str(lat) +'_'+str(startyear)+'-'+str(endyear)
   return assetname
